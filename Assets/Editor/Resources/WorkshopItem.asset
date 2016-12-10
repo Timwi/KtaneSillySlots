@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cf2299c8864afe4ab42466f546ae20d, type: 3}
+  m_Name: WorkshopItem
+  m_EditorClassIdentifier: 
+  WorkshopPublishedFileID: 814822565
+  Title: Silly Slots
+  Description: "Cha-Ching.\r\n\r\n[h1][u][b]***IMPORTANT:***[/b] This is a [b]reupload[/b]
+    of Perky\u2019s original with [b]several bugs fixed.[/b][/u][/h1]\r\nTo use this
+    mod, [b]unsubscribe[/b] from [url=https://steamcommunity.com/sharedfiles/filedetails/?id=753762370]Perky's
+    original version[/url] and [b]subscribe[/b] to this instead.\r\n\r\n[b]Bugs fixed:[/b]\r\n[list]\r\n[*]
+    In rule #2, the \u201Cunless\u201D clause was not enforced.\r\n[*] Rule #5 was
+    enforced incorrectly when a Sausage was sandwiched between two Sallies.\r\n[*]
+    The debug log information for Rule #5 was wrong.\r\n[/list]\r\nPlease enjoy this
+    updated silly slots machine!\r\n\r\n[url=http://ktane.timwi.de/PDF/Silly%20Slots.pdf]Manual
+    PDF[/url]\r\n[url=http://ktane.timwi.de/HTML/Silly%20Slots.html]Manual HTML[/url]"
+  PreviewImage: {fileID: 2800000, guid: 90b4f9311356ecb4dbd30dbd9e6275b7, type: 3}
+  Tags: []
