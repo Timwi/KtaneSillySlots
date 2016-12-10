@@ -3,23 +3,28 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public enum SlotShape {
+public enum SlotShape
+{
     BOMB, GRAPE, CHERRY, COIN
 }
-public enum SlotColor {
+public enum SlotColor
+{
     RED, GREEN, BLUE
 }
-public struct Slot {
+public struct Slot
+{
     public SlotShape shape;
     public SlotColor color;
     public float position;
-    public Slot(SlotShape shape, SlotColor color, float position) {
+    public Slot(SlotShape shape, SlotColor color, float position)
+    {
         this.shape = shape;
         this.color = color;
         this.position = position;
     }
 }
-public static class Slots {
+public static class Slots
+{
     public static Slot[] slots = new Slot[]{
         new Slot(SlotShape.GRAPE, SlotColor.BLUE, 7f),
         new Slot(SlotShape.CHERRY, SlotColor.RED, 39f),
@@ -35,10 +40,11 @@ public static class Slots {
         new Slot(SlotShape.COIN, SlotColor.RED, 340f),
     };
 
-    public static Slot Random() {
+    public static Slot Random()
+    {
         return slots[UnityEngine.Random.Range(0, slots.Length)];
     }
-        
+
     public static Dictionary<string, Dictionary<string, SlotColor>> slotColors;
     public static Dictionary<string, Dictionary<string, SlotShape>> slotShapes;
 
@@ -155,28 +161,28 @@ public class SillySlots : MonoBehaviour
     Animator mAnimator;
     int mStage = 0;
 
-    static string[] Keywords = new string[]{"Sally", "Simon", "Steven", "Sausage", "Sassy", "Silly", "Soggy"};
+    static string[] Keywords = new string[] { "Sally", "Simon", "Steven", "Sausage", "Sassy", "Silly", "Soggy" };
     static int MaxStages = 4;
 
     void Awake()
     {
         Slots.PopulateSubstitionTable();
 
-        mSlots = new Transform[]{Slot1, Slot2, Slot3};
-        mSlotTargets = new float[]{0f, 0f, 0f};
-        mSlotVelocity = new float[]{0f, 0f, 0f};
-        mSlotDuration = new float[]{0f, 0f, 0f};
+        mSlots = new Transform[] { Slot1, Slot2, Slot3 };
+        mSlotTargets = new float[] { 0f, 0f, 0f };
+        mSlotVelocity = new float[] { 0f, 0f, 0f };
+        mSlotDuration = new float[] { 0f, 0f, 0f };
         mCurrentSlots = new Slot[3];
         mStartRollTime = 0f;
         Display.text = "";
 
-        for(int i = 0; i < mSlots.Length; i++)
+        for (int i = 0; i < mSlots.Length; i++)
         {
             mCurrentSlots[i] = Slots.Random();
             mSlots[i].localRotation = Quaternion.AngleAxis(mCurrentSlots[i].position, Vector3.right);
             mSlotTargets[i] = mCurrentSlots[i].position;
         }
-        mPreviousSlots.Add((Slot[])mCurrentSlots.Clone());
+        mPreviousSlots.Add((Slot[]) mCurrentSlots.Clone());
 
         mAnimator = GetComponentInChildren<Animator>();
         Lever.OnInteract += LeverInteract;
@@ -184,7 +190,7 @@ public class SillySlots : MonoBehaviour
         GetComponent<KMBombModule>().OnActivate += OnActivate;
     }
 
-    void SetLED( int index, bool isOn )
+    void SetLED(int index, bool isOn)
     {
         LEDs[index].material.SetFloat("_Blend", isOn ? 1f : 0f);
     }
@@ -192,7 +198,6 @@ public class SillySlots : MonoBehaviour
     void OnActivate()
     {
         bActivated = true;
-        SetLED(0, true);
         NewKeyword();
     }
 
@@ -230,14 +235,14 @@ public class SillySlots : MonoBehaviour
             GetComponent<KMBombModule>().HandleStrike();
         }
 
-        for(int i = 0; i < mSlots.Length; i++)
+        for (int i = 0; i < mSlots.Length; i++)
         {
             mCurrentSlots[i] = Slots.Random();
             mSlotTargets[i] = mCurrentSlots[i].position;
             mSlotDuration[i] = Random.Range(4f, 6f);
             mSlotVelocity[i] = 0f;
         }
-        mPreviousSlots.Add((Slot[])mCurrentSlots.Clone());
+        mPreviousSlots.Add((Slot[]) mCurrentSlots.Clone());
 
         Display.text = "";
         mStartRollTime = Time.time;
@@ -267,13 +272,7 @@ public class SillySlots : MonoBehaviour
         CancelInvoke("NewKeyword");
         NewKeyword();
         for (int i = 0; i < LEDs.Length; i++)
-        {
-            if (i <= mStage) {
-                SetLED(i, true);
-            } else {
-                SetLED(i, false);
-            }
-        }
+            SetLED(i, i < mStage);
 
         if (mStage == MaxStages)
         {
@@ -298,7 +297,9 @@ public class SillySlots : MonoBehaviour
             {
                 Mathf.SmoothDampAngle(mSlots[i].localRotation.eulerAngles.x, mSlotTargets[i], ref mSlotVelocity[i], mSlotDuration[i] * 0.85f, Mathf.Infinity, Time.deltaTime);
                 mSlots[i].Rotate(mSlotVelocity[i], 0f, 0f, Space.Self);
-            } else {
+            }
+            else
+            {
                 mSlotVelocity[i] = 0f;
                 mSlots[i].localRotation = Quaternion.Slerp(mSlots[i].localRotation, Quaternion.AngleAxis(mSlotTargets[i], Vector3.right), 3f * Time.deltaTime);
                 bAnimating = false;
@@ -307,69 +308,72 @@ public class SillySlots : MonoBehaviour
 
         if (elapsed < 6f)
         {
-            int ledIndex = ((int)Mathf.Floor(elapsed*10f) % LEDs.Length);
-            int ledIndex2 = ((int)Mathf.Floor(elapsed*10f)+1) % LEDs.Length;
+            int ledIndex = ((int) Mathf.Floor(elapsed * 10f) % LEDs.Length);
+            int ledIndex2 = ((int) Mathf.Floor(elapsed * 10f) + 1) % LEDs.Length;
             SetLED(ledIndex, false);
             SetLED(ledIndex2, true);
         }
     }
 
-    System.Func<Slot, bool> SlotPredicate( string predicateColor, string predicateShape )
+    System.Func<Slot, bool> SlotPredicate(string predicateColor, string predicateShape)
     {
         var slotColors = Slots.slotColors[Display.text];
         var slotShapes = Slots.slotShapes[Display.text];
-        return (Slot s) => {
+        return (Slot s) =>
+        {
             return s.color == slotColors[predicateColor] && s.shape == slotShapes[predicateShape];
         };
     }
 
-    System.Func<Slot, bool> SlotColorPredicate( string predicateColor )
+    System.Func<Slot, bool> SlotColorPredicate(string predicateColor)
     {
         var slotColors = Slots.slotColors[Display.text];
-        return (Slot s) => {
+        return (Slot s) =>
+        {
             return s.color == slotColors[predicateColor];
         };
     }
 
-    System.Func<Slot, bool> SlotShapePredicate( string predicateShape )
+    System.Func<Slot, bool> SlotShapePredicate(string predicateShape)
     {
         var slotShapes = Slots.slotShapes[Display.text];
-        return (Slot s) => {
+        return (Slot s) =>
+        {
             return s.shape == slotShapes[predicateShape];
         };
     }
 
-    int CountSlots( string predicateColor, string predicateShape )
+    int CountSlots(string predicateColor, string predicateShape)
     {
         return mCurrentSlots.Count(SlotPredicate(predicateColor, predicateShape));
     }
 
-    int CountSlots( Slot[] slots, string predicateColor, string predicateShape )
+    int CountSlots(Slot[] slots, string predicateColor, string predicateShape)
     {
         return slots.Count(SlotPredicate(predicateColor, predicateShape));
     }
 
-    int CountSlotsAllStages( string predicateColor, string predicateShape )
+    int CountSlotsAllStages(string predicateColor, string predicateShape)
     {
         int count = 0;
-        for (int i = 0; i <= mPreviousSlots.Count-2; i++)
+        for (int i = 0; i <= mPreviousSlots.Count - 2; i++)
         {
             count += CountSlots(mPreviousSlots[i], predicateColor, predicateShape);
         }
         return count;
     }
 
-    int CountSlotShapes( string predicateShape )
+    int CountSlotShapes(string predicateShape)
     {
         return mCurrentSlots.Count(SlotShapePredicate(predicateShape));
     }
 
-    int CountSlotColors( string predicateColor )
+    int CountSlotColors(string predicateColor)
     {
         return mCurrentSlots.Count(SlotColorPredicate(predicateColor));
     }
 
-    Slot? GetFirstSlotShape( string predicateShape )
+    Slot? GetFirstSlotShape(string predicateShape)
     {
         var slotShapes = Slots.slotShapes[Display.text];
         for (int i = 0; i < 3; i++)
@@ -380,7 +384,7 @@ public class SillySlots : MonoBehaviour
         return null;
     }
 
-    Slot? GetFirstSlotColor( string predicateColor )
+    Slot? GetFirstSlotColor(string predicateColor)
     {
         var slotColors = Slots.slotColors[Display.text];
         for (int i = 0; i < 3; i++)
@@ -391,12 +395,12 @@ public class SillySlots : MonoBehaviour
         return null;
     }
 
-    Slot[] GetSlotShapes( string predicateShape )
+    Slot[] GetSlotShapes(string predicateShape)
     {
         return mCurrentSlots.Where(SlotShapePredicate(predicateShape)).ToArray();
     }
 
-    Slot[] GetSlotColors( string predicateColor )
+    Slot[] GetSlotColors(string predicateColor)
     {
         return mCurrentSlots.Where(SlotColorPredicate(predicateColor)).ToArray();
     }
@@ -418,8 +422,8 @@ public class SillySlots : MonoBehaviour
         {
             if (mPreviousSlots.Count > 2)
             {
-                int index = mCurrentSlots.ToList().FindIndex(s => {return s.color == slotColors["Sassy"] && s.shape == slotShapes["Sally"];});
-                if (mPreviousSlots[mPreviousSlots.Count-3][index].color == slotColors["Soggy"])
+                int index = mCurrentSlots.ToList().FindIndex(s => { return s.color == slotColors["Sassy"] && s.shape == slotShapes["Sally"]; });
+                if (mPreviousSlots[mPreviousSlots.Count - 3][index].color == slotColors["Soggy"])
                 {
                     Debug.Log("Fallthrough: There is a single Sassy Sally, but the slot in the same position 2 stages ago was soggy.");
                 }
@@ -429,15 +433,12 @@ public class SillySlots : MonoBehaviour
                     return true;
                 }
             }
-            Debug.Log("There is a single Sassy Sally, unless the slot in the same position 2 stages ago was soggy.");
-            return true;
+            else
+            {
+                Debug.Log("There is a single Sassy Sally, unless the slot in the same position 2 stages ago was soggy.");
+                return true;
+            }
         }
-        // There is a single Sassy slot, unless it's Simon.
-//        if ((CountSlotColors("Sassy") == 1) && (GetFirstSlotColor("Sassy").Value.shape != slotShapes["Simon"]))
-//        {
-//            Debug.Log("There is a single Sassy slot, unless it's Simon.");
-//            return true;
-//        }
         // There are 2 or more Soggy Stevens.
         if (CountSlots("Soggy", "Steven") >= 2)
         {
@@ -449,6 +450,21 @@ public class SillySlots : MonoBehaviour
         {
             Debug.Log("There are 3 Simons, unless any of them are Sassy.");
             return true;
+        }
+        // There is a Sausage adjacent to a Sally, unless Sally is Soggy.
+        if (CountSlotShapes("Sausage") > 0 && CountSlotShapes("Sally") > 0)
+        {
+            Slot a = mCurrentSlots[0];
+            Slot b = mCurrentSlots[1];
+            Slot c = mCurrentSlots[2];
+            if ((a.shape == slotShapes["Sausage"] && b.shape == slotShapes["Sally"] && b.color != slotColors["Soggy"]) ||
+                (b.shape == slotShapes["Sausage"] && a.shape == slotShapes["Sally"] && a.color != slotColors["Soggy"]) ||
+                (b.shape == slotShapes["Sausage"] && c.shape == slotShapes["Sally"] && c.color != slotColors["Soggy"]) ||
+                (c.shape == slotShapes["Sausage"] && b.shape == slotShapes["Sally"] && b.color != slotColors["Soggy"]))
+            {
+                Debug.Log("There is a Sausage adjacent to a Sally, unless Sally is Soggy.");
+                return true;
+            }
         }
         // There are exactly 2 Silly slots, unless they are both Steven.
         if (CountSlotColors("Silly") == 2)
@@ -465,46 +481,12 @@ public class SillySlots : MonoBehaviour
                 Debug.Log("Fallthrough: There are exactly 2 Silly slots, but they were both Steven.");
             }
         }
-        // There is a Sausage adjacent to a Sally, unless Sally is Soggy.
-        if(CountSlotShapes("Sausage") > 0 && CountSlotShapes("Sally") > 0)
-        {
-            Slot a = mCurrentSlots[0];
-            Slot b = mCurrentSlots[1];
-            Slot c = mCurrentSlots[2];
-            bool isAdjacent = false;
-            if (a.shape == slotShapes["Sally"] && b.shape == slotShapes["Sausage"] && c.shape == slotShapes["Sally"] && (a.color == slotColors["Soggy"] || c.color == slotColors["Soggy"]))
-            {
-                isAdjacent = true;
-            }
-            else if (a.shape == slotShapes["Sausage"] && b.shape == slotShapes["Sally"] && b.color != slotColors["Soggy"])
-            {
-                isAdjacent = true;
-            }
-            else if (a.shape == slotShapes["Sally"] && b.shape == slotShapes["Sausage"] && a.color != slotColors["Soggy"])
-            {
-                isAdjacent = true;
-            }
-            else if (b.shape == slotShapes["Sausage"] && c.shape == slotShapes["Sally"] && c.color != slotColors["Soggy"])
-            {
-                isAdjacent = true;
-            }
-            else if (b.shape == slotShapes["Sally"] && c.shape == slotShapes["Sausage"] && b.color != slotColors["Soggy"])
-            {
-                isAdjacent = true;
-            }
-
-            if (isAdjacent)
-            {
-                Debug.Log("There are exactly 2 Silly slots, unless they are both Steven.");
-                return true;
-            }
-        }
         // There is a single Soggy slot, unless the previous stage had any number of Sausage slots.
-        if(CountSlotColors("Soggy") == 1)
+        if (CountSlotColors("Soggy") == 1)
         {
             if (mPreviousSlots.Count > 1)
             {
-                int count = mPreviousSlots[mPreviousSlots.Count-2].Count(SlotShapePredicate("Sausage"));
+                int count = mPreviousSlots[mPreviousSlots.Count - 2].Count(SlotShapePredicate("Sausage"));
                 if (count == 0)
                 {
                     Debug.Log("There is a single Soggy slot, unless the previous stage had any number of Sausage slots.");
@@ -522,7 +504,7 @@ public class SillySlots : MonoBehaviour
             }
         }
         // All 3 slots are the same symbol and colour, unless there has been a Soggy Sausage at any stage.
-        if (mCurrentSlots[0].shape == mCurrentSlots[1].shape && mCurrentSlots[0].color == mCurrentSlots[1].color && 
+        if (mCurrentSlots[0].shape == mCurrentSlots[1].shape && mCurrentSlots[0].color == mCurrentSlots[1].color &&
                  mCurrentSlots[1].shape == mCurrentSlots[2].shape && mCurrentSlots[1].color == mCurrentSlots[2].color)
         {
             int count = CountSlotsAllStages("Soggy", "Sausage");
@@ -545,7 +527,7 @@ public class SillySlots : MonoBehaviour
             }
             else if (mPreviousSlots.Count > 1)
             {
-                int count = mPreviousSlots[mPreviousSlots.Count-2].Count(SlotPredicate("Silly", "Steven"));
+                int count = mPreviousSlots[mPreviousSlots.Count - 2].Count(SlotPredicate("Silly", "Steven"));
                 if (count == 0)
                 {
                     Debug.Log("All 3 slots are the same color, unless any of them are Sally or there was a Silly Steven in the last stage.");

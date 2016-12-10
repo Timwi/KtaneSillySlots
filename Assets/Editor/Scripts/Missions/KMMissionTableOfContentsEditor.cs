@@ -27,7 +27,7 @@ public class KMMissionTableOfContentsEditor : Editor
         KMMission mission = ScriptableObject.CreateInstance<KMMission>();
         string path = AssetDatabase.GenerateUniqueAssetPath("Assets/" + MISSION_FOLDER + "/mission.asset");
         AssetDatabase.CreateAsset(mission, path);
-        AssetImporter.GetAtPath(path).assetBundleName = ModConfigs.BundleName;
+        AssetImporter.GetAtPath(path).assetBundleName = AssetBundler.BUNDLE_FILENAME;
 
         EditorGUIUtility.PingObject(mission);
     }
@@ -44,7 +44,7 @@ public class KMMissionTableOfContentsEditor : Editor
 
         string path = AssetDatabase.GenerateUniqueAssetPath("Assets/" + MISSION_FOLDER + "/TableOfContents.asset");
         AssetDatabase.CreateAsset(tableOfContents, path);
-        AssetImporter.GetAtPath(path).assetBundleName = ModConfigs.BundleName;
+        AssetImporter.GetAtPath(path).assetBundleName = AssetBundler.BUNDLE_FILENAME;
 
         EditorGUIUtility.PingObject(tableOfContents);
 

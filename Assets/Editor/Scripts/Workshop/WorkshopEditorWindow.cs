@@ -7,6 +7,8 @@ using System.Collections.Generic;
 
 public class WorkshopEditorWindow : EditorWindow
 {
+    private Vector2 scrollPosition;
+
     protected static readonly AppId_t KTANE_APP_ID = new AppId_t(341800);
     protected static readonly AppId_t EDITOR_APP_ID = new AppId_t(341800); //For now, the same AppID
 
@@ -32,7 +34,7 @@ public class WorkshopEditorWindow : EditorWindow
         Debug.LogWarning(pchDebugText);
     }
 
-    [MenuItem("Keep Talking ModKit/Steam Workshop Tool", priority = 20)]
+    [MenuItem("Keep Talking ModKit/Steam Workshop Tool _#F6", priority = 20)]
     protected static void ShowWindow()
     {
         WorkshopEditorWindow window = EditorWindow.GetWindow<WorkshopEditorWindow>("Workshop");
@@ -45,7 +47,7 @@ public class WorkshopEditorWindow : EditorWindow
         {
             EditorGUILayout.HelpBox("Steam is not running. Please start Steam to continue.", MessageType.Error);
         }
-        else if (ModConfigs.Instance == null || string.IsNullOrEmpty(ModConfigs.ID))
+        else if (ModConfig.Instance == null || string.IsNullOrEmpty(ModConfig.ID))
         {
             EditorGUILayout.HelpBox("You must configure your ModConfig using \"Keep Talking Mod Kit -> Configure Mod\".", MessageType.Error);
         }
@@ -57,21 +59,20 @@ public class WorkshopEditorWindow : EditorWindow
         {
             if (currentWorkshopItem == null)
             {
-                string workshopItemAssetPath = "Assets/Editor/Resources/";
+                string workshopItemAssetPath = "Assets/Editor/Resources/WorkshopItem.asset";
 
-                currentWorkshopItem = ModConfigs.WorkshopConfig;
+                currentWorkshopItem = AssetDatabase.LoadAssetAtPath<WorkshopItem>(workshopItemAssetPath);
 
                 if (currentWorkshopItem == null)
                 {
                     currentWorkshopItem = ScriptableObject.CreateInstance<WorkshopItem>();
 
-                    if (ModConfigs.Instance != null)
+                    if (ModConfig.Instance != null)
                     {
-                        currentWorkshopItem.Title = ModConfigs.Title;
+                        currentWorkshopItem.Title = ModConfig.Title;
                     }
 
-                    ModConfigs.WorkshopConfig = currentWorkshopItem;
-                    AssetDatabase.CreateAsset(currentWorkshopItem, workshopItemAssetPath + ModConfigs.ID + "WorshopItem.asset");
+                    AssetDatabase.CreateAsset(currentWorkshopItem, workshopItemAssetPath);
                 }
 
                 if (workshopItemEditor != null && workshopItemEditor.target != currentWorkshopItem)
@@ -86,6 +87,7 @@ public class WorkshopEditorWindow : EditorWindow
                 }
             }
 
+            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
             workshopItemEditor.OnInspectorGUI();
 
             //Publishing Tools
@@ -169,12 +171,13 @@ public class WorkshopEditorWindow : EditorWindow
                 GUI.enabled = true;
             }
             EditorGUILayout.EndVertical();
+            EditorGUILayout.EndScrollView();
         }
     }
 
     protected string GetContentPath()
     {
-        return Path.GetFullPath(ModConfigs.OutputFolder + "/" + ModConfigs.ID);
+        return Path.GetFullPath(ModConfig.OutputFolder + "/" + ModConfig.ID);
     }
 
     protected string[] GetTags()
