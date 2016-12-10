@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="256px" height="256px" viewBox="0 0 256 256" enable-background="new 0 0 256 256" xml:space="preserve">
+<g>
+	<g>
+		<defs>
+			<rect id="SVGID_1_" width="256" height="256"/>
+		</defs>
+		<clipPath id="SVGID_2_">
+			<use xlink:href="#SVGID_1_"  overflow="visible"/>
+		</clipPath>
+		<g clip-path="url(#SVGID_2_)">
+			<path fill-opacity="0" d="M0,0h256v256H0V0z"/>
+			<path fill="#FFFFFF" d="M-4.414,0h256v255.977h-256V0z"/>
+			<path fill-opacity="0" d="M3.736,4.249H251.58v248.399H3.736V4.249z"/>
+			<path fill="none" stroke="#000000" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10" d="M3.736,4.249H251.58
+				v248.399H3.736V4.249z"/>
+			<path fill="#FFFFFF" d="M207.988,29.833L207.988,29.833c0-6.162,5.125-11.156,11.445-11.156l0,0c3.035,0,5.946,1.175,8.094,3.268
+				c2.146,2.092,3.353,4.93,3.353,7.889l0,0c0,6.161-5.124,11.156-11.446,11.156l0,0C213.113,40.989,207.988,35.994,207.988,29.833z
+				"/>
+			<path fill="none" stroke="#000000" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10" d="M207.988,29.833
+				L207.988,29.833c0-6.162,5.125-11.156,11.445-11.156l0,0c3.035,0,5.946,1.175,8.094,3.268c2.146,2.092,3.353,4.93,3.353,7.889
+				l0,0c0,6.161-5.124,11.156-11.446,11.156l0,0C213.113,40.989,207.988,35.994,207.988,29.833z"/>
+		</g>
+	</g>
+</g>
+<path fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" d="M38.482,38.211c0-4.762-3.86-8.622-8.623-8.622
+	c-4.762,0-8.621,3.86-8.621,8.622c0,3.459,2.041,6.435,4.982,7.808v83.813H33.5V46.02C36.439,44.646,38.482,41.67,38.482,38.211z"/>
+<g>
+	<g>
+		<rect x="58.833" y="60.5" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" width="150.333" height="150.333"/>
+		<line fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" x1="58.833" y1="104.5" x2="209.167" y2="104.5"/>
+		<line fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" x1="58.833" y1="160.5" x2="209.167" y2="160.5"/>
+	</g>
+	<rect x="76.5" y="122.833" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" width="22.333" height="22.333"/>
+	<circle fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" cx="136.167" cy="134" r="11.333"/>
+	<polygon fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" points="184.834,121.375 187.668,130.098 196.841,130.098 
+		189.42,135.489 192.254,144.212 184.834,138.821 177.414,144.212 180.248,135.489 172.827,130.098 182,130.098 	"/>
+	<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="111.167" y1="156.167" x2="111.167" y2="109.5"/>
+	<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="161.167" y1="156.127" x2="161.167" y2="109.46"/>
+</g>
+<rect x="76.486" y="21.167" fill="none" stroke="#000000" stroke-width="1.2936" stroke-miterlimit="10" width="119.36" height="20.667"/>
+<rect x="76.486" y="223.834" fill="none" stroke="#000000" stroke-width="1.2936" stroke-miterlimit="10" width="119.36" height="20.666"/>
+<text transform="matrix(1 0 0 1 133 36.5)" font-family="'MyriadPro-Regular'" font-size="12">...</text>
+<text transform="matrix(1 0 0 1 124.834 238.167)" font-family="'MyriadPro-Regular'" font-size="12">KEEP</text>
+</svg>

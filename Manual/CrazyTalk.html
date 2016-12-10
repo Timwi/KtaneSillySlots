@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html class="no-js"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Keep Talking and Nobody Explodes Example Manual Page</title>
+    <meta name="viewport" content="initial-scale=1"> 
+	<link href='http://fonts.googleapis.com/css?family=Special+Elite' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link href="css" rel="stylesheet" type="text/css">
+	<script src="jquery-3.1.0.min.js"></script>
+	<script src="crazy_talk.json"></script>
+</head>
+<body>
+<div class="section">
+    <div class="page page-bg-01">
+        		<div class="page-header">
+			<span class="page-header-doc-title">Keep Talking and Nobody Explodes Mod</span>
+			<span class="page-header-section-title">Crazy Talk</span>
+		</div>
+        <div class="page-content">
+    	    <img src="img/Component.svg" class="diagram">
+            <h2>On the Subject of Crazy Talk</h2>
+            <p class="flavour-text">
+				Nothing. Literally nothing. Blank. Nada.
+			</p>
+
+			<ol>
+				<li>Text will appear on a display.</li>
+				<li>Find the exact match and the action in the table below.</li>
+				<li>Flip the switch <u>down</u> when the bomb timer has the number before the forward slash in the seconds column.</li>
+				<li>Flip the switch back <u>up</u> when the bomb timer has the number after the forward slash in the seconds column.</li>
+			</ol>
+			
+			<br>
+			
+			<div style="font-size: 0.8rem">
+			<table style="float: left; width: 50%;" >
+				<thead><td><b>Display</b></td><td><b>Action</b></td></thead>
+				<tbody id="tbl0">
+				</tbody>
+			</table>
+			<table style="float: left; width: 50%;" >
+				<thead><td><b>Display</b></td><td><b>Action</b></td></thead>
+				<tbody id="tbl1">
+				</tbody>
+			</table>
+			<div style="clear: both;"></div><br><br><br><br>
+			<table style="float: left; width: 50%;" >
+				<thead><td><b>Display</b></td><td><b>Action</b></td></thead>
+				<tbody id="tbl2">
+				</tbody>
+			</table>
+			<table style="float: left; width: 50%;" >
+				<thead><td><b>Display</b></td><td><b>Action</b></td></thead>
+				<tbody id="tbl3">
+				</tbody>
+			</table>
+			</div>
+
+			<script>
+				var count = crazy_talk.options.length;
+				let tblIndex = 0;
+				for (var i = 0; i < count; i++) {
+					let opt = crazy_talk.options[i];
+					var tr = $("#tbl" + (tblIndex++ % 4))
+						.append(`<tr><td>${opt.txt}</td><td>${opt.down}/${opt.up}</td></tr>`);
+				}
+			</script>
+
+			<div style="clear: both;"></div>
+			<br><br>
+			
+<!--
+YOU ARE, U R, YOU'RE, YOUR, YOR, THE LETTERS U AND R, UNIFORM ROMEO, JUST U AND R, THE PHRASE; THE LETTERS U AND R, THE PHRASE SEMICOLON SYMBOL THE LETTERS U AND R, YOUR POSSESIVE, YOU ARE CONTRACTION, YOU ARE WITH CONTRACTION, YOU ARE WITH APOSTROPHE, THE PHRASE SEMICOLON THE LETTERS YOU AND ARE, YOU AND R, U AND THE WORD ARE, U AND ARE, THE WORD YOU AND THE LETTER R, U AND THE WORD ARE BUT AS AN ACTUAL PHRASE, YOR SPELT Y O R, YOR SPELT WHY OH ARE, YOUR SPELT WHY OH YOU ARE, YOUR SPELT Y O U R
+
+X Y C B, EX WHY SEA BE, XRAY YANKEE CHARLIE BRAVO, X Y CEE BEE, EX WHY? SEE B, XY SEE BE, XY TOGETHER SEE BE, E X TOGETHER LETTER Y LETTER C LETTER B, EX Y C B, X WHY SEA B, THE LETTER X WHY AS IN QUESTION SEA AS IN WATER BEE AS IN ANIMAL, X WHY SEA BEE, WORD FOR WORD THE LETTER X WHY AS IN QUESTION SEA AS IN WATER BEE AS IN ANIMAL, X Y      SEBE, EXY SIBI, ECKS Y? CB, ECKS YCB
+
+譱, 諭, 讐, 財, 彑, 怙, 廿, 咽, 嗚, 洄, Җ, Ӝ, ӄ, Ӆ, Ӥ, Ѭ, Ѩ, Ѥ, Ю, Ѧ, Д, ф, à, á, ã, ä, å, â, è, é, ê, ë, µ, Ķ, Ŀ, ŀ, Ł, Ľ, ΰ, έ, Ϋ, λ, ξ, θ, ς
+
+-->
+        </div>
+    </div>
+</div>
+</body></html>
