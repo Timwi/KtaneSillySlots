@@ -160,6 +160,8 @@ public class SillySlots : MonoBehaviour
     bool bAnimating = false;
     Animator mAnimator;
     int mStage = 0;
+    int lastFlashingLed = 0;
+    bool solved = false;
 
     static string[] Keywords = new string[] { "Sally", "Simon", "Steven", "Sausage", "Sassy", "Silly", "Soggy" };
     static int MaxStages = 4;
@@ -204,12 +206,13 @@ public class SillySlots : MonoBehaviour
     bool KeepInteract()
     {
         GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
-        if (bActivated && !bAnimating)
+        if (bActivated && !bAnimating && !solved)
         {
             if (!CheckIllegalState())
             {
                 GetComponent<KMBombModule>().HandlePass();
                 GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.CorrectChime, transform);
+                solved = true;
             }
             else
             {
@@ -221,10 +224,8 @@ public class SillySlots : MonoBehaviour
 
     bool LeverInteract()
     {
-        if (bActivated && !bAnimating)
-        {
+        if (bActivated && !bAnimating && !solved)
             LeverPull();
-        }
         return false;
     }
 
@@ -244,12 +245,11 @@ public class SillySlots : MonoBehaviour
         }
         mPreviousSlots.Add((Slot[]) mCurrentSlots.Clone());
 
-        Display.text = "";
         mStartRollTime = Time.time;
         GetComponent<KMAudio>().PlaySoundAtTransform("LeverPull", transform);
         Invoke("PlaySlotMachineSound", 1.0f);
 
-        InvokeRepeating("NewKeyword", 0f, 0.1f);
+        InvokeRepeating("NewKeywordAndLED", 1.0f, 0.1f);
         Invoke("StopRolling", 7.0f);
         mStage++;
 
@@ -262,6 +262,14 @@ public class SillySlots : MonoBehaviour
         GetComponent<KMAudio>().PlaySoundAtTransform("SlotMachineRoll", transform);
     }
 
+    void NewKeywordAndLED()
+    {
+        NewKeyword();
+        SetLED(lastFlashingLed, false);
+        lastFlashingLed = (lastFlashingLed + 1) % LEDs.Length;
+        SetLED(lastFlashingLed, true);
+    }
+
     void NewKeyword()
     {
         Display.text = Keywords[Random.Range(0, Keywords.Length)];
@@ -269,7 +277,8 @@ public class SillySlots : MonoBehaviour
 
     void StopRolling()
     {
-        CancelInvoke("NewKeyword");
+        bAnimating = false;
+        CancelInvoke("NewKeywordAndLED");
         NewKeyword();
         for (int i = 0; i < LEDs.Length; i++)
             SetLED(i, i < mStage);
@@ -278,6 +287,7 @@ public class SillySlots : MonoBehaviour
         {
             GetComponent<KMBombModule>().HandlePass();
             GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.CorrectChime, transform);
+            solved = true;
         }
     }
 
@@ -302,16 +312,7 @@ public class SillySlots : MonoBehaviour
             {
                 mSlotVelocity[i] = 0f;
                 mSlots[i].localRotation = Quaternion.Slerp(mSlots[i].localRotation, Quaternion.AngleAxis(mSlotTargets[i], Vector3.right), 3f * Time.deltaTime);
-                bAnimating = false;
             }
-        }
-
-        if (elapsed < 6f)
-        {
-            int ledIndex = ((int) Mathf.Floor(elapsed * 10f) % LEDs.Length);
-            int ledIndex2 = ((int) Mathf.Floor(elapsed * 10f) + 1) % LEDs.Length;
-            SetLED(ledIndex, false);
-            SetLED(ledIndex2, true);
         }
     }
 

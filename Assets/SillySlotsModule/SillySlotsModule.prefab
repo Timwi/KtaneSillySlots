@@ -1921,7 +1921,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - Standard
+  - Legacy Shaders/Diffuse
 --- !u!114 &114000012745668262
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1960,7 +1960,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - Standard
+  - Legacy Shaders/Diffuse
 --- !u!114 &114000013253140698
 MonoBehaviour:
   m_ObjectHideFlags: 1
