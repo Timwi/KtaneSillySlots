@@ -129,18 +129,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 176252, guid: a0f23591ebb5da1469408ad667662a81, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 173014, guid: a0f23591ebb5da1469408ad667662a81, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 176252, guid: a0f23591ebb5da1469408ad667662a81, type: 2}
-      propertyPath: m_Name
-      value: KeepButtonBase
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a0f23591ebb5da1469408ad667662a81, type: 2}
   m_IsPrefabParent: 0
