@@ -19,8 +19,11 @@ MonoBehaviour:
     original version[/url] and [b]subscribe[/b] to this instead.\r\n\r\n[b]Bugs fixed:[/b]\r\n[list]\r\n[*]
     In rule #2, the \u201Cunless\u201D clause was not enforced.\r\n[*] Rule #5 was
     enforced incorrectly when a Sausage was sandwiched between two Sallies.\r\n[*]
-    The debug log information for Rule #5 was wrong.\r\n[/list]\r\nPlease enjoy this
-    updated silly slots machine!\r\n\r\n[url=http://ktane.timwi.de/PDF/Silly%20Slots.pdf]Manual
-    PDF[/url]\r\n[url=http://ktane.timwi.de/HTML/Silly%20Slots.html]Manual HTML[/url]"
+    The debug log information for Rule #5 was wrong.\r\n[*] Reduce number of LEDs
+    to 4 to reflect number of stages.\r\n[*] Make clickable areas larger (the lever
+    was really hard to click).\r\n[/list]\r\nPlease enjoy this updated silly slots
+    machine!\r\n\r\n[url=http://ktane.timwi.de/PDF/Silly%20Slots%20(with%20bugfixes).pdf]Manual
+    PDF[/url]\r\n[url=http://ktane.timwi.de/HTML/Silly%20Slots%20(with%20bugfixes).html]Manual
+    HTML[/url]"
   PreviewImage: {fileID: 2800000, guid: 90b4f9311356ecb4dbd30dbd9e6275b7, type: 3}
   Tags: []
