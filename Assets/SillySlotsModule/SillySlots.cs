@@ -200,6 +200,7 @@ public class SillySlots : MonoBehaviour
     void OnActivate()
     {
         bActivated = true;
+        SetLED(0, true);
         NewKeyword();
     }
 
@@ -281,7 +282,7 @@ public class SillySlots : MonoBehaviour
         CancelInvoke("NewKeywordAndLED");
         NewKeyword();
         for (int i = 0; i < LEDs.Length; i++)
-            SetLED(i, i < mStage);
+            SetLED(i, i <= mStage);
 
         if (mStage == MaxStages)
         {
