@@ -12,18 +12,8 @@ MonoBehaviour:
   m_Name: WorkshopItem
   m_EditorClassIdentifier: 
   WorkshopPublishedFileID: 814822565
-  Title: Silly Slots (with bugfixes)
-  Description: "Cha-Ching.\r\n\r\n[h1][u][b]***IMPORTANT:***[/b] This is a [b]reupload[/b]
-    of Perky\u2019s original with [b]several bugs fixed.[/b][/u][/h1]\r\nTo use this
-    mod, [b]unsubscribe[/b] from [url=https://steamcommunity.com/sharedfiles/filedetails/?id=753762370]Perky's
-    original version[/url] and [b]subscribe[/b] to this instead.\r\n\r\n[b]Bugs fixed:[/b]\r\n[list]\r\n[*]
-    In rule #2, the \u201Cunless\u201D clause was not enforced.\r\n[*] Rule #5 was
-    enforced incorrectly when a Sausage was sandwiched between two Sallies.\r\n[*]
-    The debug log information for Rule #5 was wrong.\r\n[*] Reduce number of LEDs
-    to 4 to reflect number of stages.\r\n[*] Make clickable areas larger (the lever
-    was really hard to click).\r\n[/list]\r\nPlease enjoy this updated silly slots
-    machine!\r\n\r\n[url=http://ktane.timwi.de/PDF/Silly%20Slots%20(with%20bugfixes).pdf]Manual
-    PDF[/url]\r\n[url=http://ktane.timwi.de/HTML/Silly%20Slots%20(with%20bugfixes).html]Manual
-    HTML[/url]"
-  PreviewImage: {fileID: 2800000, guid: 90b4f9311356ecb4dbd30dbd9e6275b7, type: 3}
+  Title: Silly Slots
+  Description: "Cha-Ching.\r\n\r\nModule created by Perky, maintained by Timwi.\r\n\r\n[url=http://ktane.timwi.de/PDF/Silly%20Slots.pdf]Manual
+    PDF[/url]\r\n[url=http://ktane.timwi.de/HTML/Silly%20Slots.html]Manual HTML[/url]"
+  PreviewImage: {fileID: 2800000, guid: d17da6eb2725a9043a431f21bf0d11fd, type: 3}
   Tags: []
