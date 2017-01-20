@@ -202,6 +202,7 @@ public class SillySlots : MonoBehaviour
         bActivated = true;
         SetLED(0, true);
         NewKeyword();
+        LogCurrentStage();
     }
 
     bool KeepInteract()
@@ -211,12 +212,14 @@ public class SillySlots : MonoBehaviour
         {
             if (!CheckIllegalState())
             {
+                Debug.Log("[Silly Slots] KEEP is correct.");
                 GetComponent<KMBombModule>().HandlePass();
                 GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.CorrectChime, transform);
                 solved = true;
             }
             else
             {
+                Debug.Log("[Silly Slots] Pressed KEEP, should have pulled the lever.");
                 GetComponent<KMBombModule>().HandleStrike();
             }
         }
@@ -234,6 +237,7 @@ public class SillySlots : MonoBehaviour
     {
         if (!CheckIllegalState())
         {
+            Debug.Log("[Silly Slots] Pulled lever, should have pressed KEEP.");
             GetComponent<KMBombModule>().HandleStrike();
         }
 
@@ -290,6 +294,15 @@ public class SillySlots : MonoBehaviour
             GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.CorrectChime, transform);
             solved = true;
         }
+        else
+        {
+            LogCurrentStage();
+        }
+    }
+
+    private void LogCurrentStage()
+    {
+        Debug.LogFormat("[Silly Slots] Stage {0} is {2} / {1}.", mStage + 1, string.Join(", ", mCurrentSlots.Select(slot => string.Format("{0} {1}", slot.color, slot.shape)).ToArray()), Display.text);
     }
 
     void Update()
@@ -416,7 +429,7 @@ public class SillySlots : MonoBehaviour
         // There is a single Silly Sasusage.
         if (CountSlots("Silly", "Sausage") == 1)
         {
-            Debug.Log("There is a single Silly Sasusage.");
+            Debug.Log("[Silly Slots] There is a single Silly Sasusage.");
             return true;
         }
         // There is a single Sassy Sally, unless the slot in the same position 2 stages ago was soggy.
@@ -427,30 +440,30 @@ public class SillySlots : MonoBehaviour
                 int index = mCurrentSlots.ToList().FindIndex(s => { return s.color == slotColors["Sassy"] && s.shape == slotShapes["Sally"]; });
                 if (mPreviousSlots[mPreviousSlots.Count - 3][index].color == slotColors["Soggy"])
                 {
-                    Debug.Log("Fallthrough: There is a single Sassy Sally, but the slot in the same position 2 stages ago was soggy.");
+                    Debug.Log("[Silly Slots] Fallthrough: There is a single Sassy Sally, but the slot in the same position 2 stages ago was soggy.");
                 }
                 else
                 {
-                    Debug.Log("There is a single Sassy Sally, unless the slot in the same position 2 stages ago was soggy.");
+                    Debug.Log("[Silly Slots] There is a single Sassy Sally, unless the slot in the same position 2 stages ago was soggy.");
                     return true;
                 }
             }
             else
             {
-                Debug.Log("There is a single Sassy Sally, unless the slot in the same position 2 stages ago was soggy.");
+                Debug.Log("[Silly Slots] There is a single Sassy Sally, unless the slot in the same position 2 stages ago was soggy.");
                 return true;
             }
         }
         // There are 2 or more Soggy Stevens.
         if (CountSlots("Soggy", "Steven") >= 2)
         {
-            Debug.Log("There are 2 or more Soggy Stevens.");
+            Debug.Log("[Silly Slots] There are 2 or more Soggy Stevens.");
             return true;
         }
         // There are 3 Simons, unless any of them are Sassy.
         if (CountSlotShapes("Simon") == 3 && CountSlotColors("Sassy") == 0)
         {
-            Debug.Log("There are 3 Simons, unless any of them are Sassy.");
+            Debug.Log("[Silly Slots] There are 3 Simons, unless any of them are Sassy.");
             return true;
         }
         // There is a Sausage adjacent to a Sally, unless Sally is Soggy.
@@ -464,7 +477,7 @@ public class SillySlots : MonoBehaviour
                 (b.shape == slotShapes["Sausage"] && c.shape == slotShapes["Sally"] && c.color != slotColors["Soggy"]) ||
                 (c.shape == slotShapes["Sausage"] && b.shape == slotShapes["Sally"] && b.color != slotColors["Soggy"]))
             {
-                Debug.Log("There is a Sausage adjacent to a Sally, unless Sally is Soggy.");
+                Debug.Log("[Silly Slots] There is a Sausage adjacent to a Sally, unless Sally is Soggy.");
                 return true;
             }
         }
@@ -475,12 +488,12 @@ public class SillySlots : MonoBehaviour
             int count = sillySlots.Count(SlotShapePredicate("Steven"));
             if (count != sillySlots.Length)
             {
-                Debug.Log("There are exactly 2 Silly slots, unless they are both Steven.");
+                Debug.Log("[Silly Slots] There are exactly 2 Silly slots, unless they are both Steven.");
                 return true;
             }
             else
             {
-                Debug.Log("Fallthrough: There are exactly 2 Silly slots, but they were both Steven.");
+                Debug.Log("[Silly Slots] Fallthrough: There are exactly 2 Silly slots, but they were both Steven.");
             }
         }
         // There is a single Soggy slot, unless the previous stage had any number of Sausage slots.
@@ -491,17 +504,17 @@ public class SillySlots : MonoBehaviour
                 int count = mPreviousSlots[mPreviousSlots.Count - 2].Count(SlotShapePredicate("Sausage"));
                 if (count == 0)
                 {
-                    Debug.Log("There is a single Soggy slot, unless the previous stage had any number of Sausage slots.");
+                    Debug.Log("[Silly Slots] There is a single Soggy slot, unless the previous stage had any number of Sausage slots.");
                     return true;
                 }
                 else
                 {
-                    Debug.Log("Fallthrough: There is a single Soggy slot, but the previous stage had any number of Sausage slots.");
+                    Debug.Log("[Silly Slots] Fallthrough: There is a single Soggy slot, but the previous stage had any number of Sausage slots.");
                 }
             }
             else
             {
-                Debug.Log("There is a single Soggy slot, unless the previous stage had any number of Sausage slots.");
+                Debug.Log("[Silly Slots] There is a single Soggy slot, unless the previous stage had any number of Sausage slots.");
                 return true;
             }
         }
@@ -512,12 +525,12 @@ public class SillySlots : MonoBehaviour
             int count = CountSlotsAllStages("Soggy", "Sausage");
             if (count == 0)
             {
-                Debug.Log("All 3 slots are the same symbol and colour, unless there has been a Soggy Sausage at any stage.");
+                Debug.Log("[Silly Slots] All 3 slots are the same symbol and colour, unless there has been a Soggy Sausage at any stage.");
                 return true;
             }
             else
             {
-                Debug.Log("Fallthrough: All 3 slots are the same symbol and colour, but there has been a Soggy Sausage at any stage.");
+                Debug.Log("[Silly Slots] Fallthrough: All 3 slots are the same symbol and colour, but there has been a Soggy Sausage at any stage.");
             }
         }
         // All 3 slots are the same color, unless any of them are Sally or there was a Silly Steven in the last stage.
@@ -525,31 +538,31 @@ public class SillySlots : MonoBehaviour
         {
             if (CountSlotShapes("Sally") > 0)
             {
-                Debug.Log("Fallthrough: All 3 slots are the same color, but any of them are Sally.");
+                Debug.Log("[Silly Slots] Fallthrough: All 3 slots are the same color, but any of them are Sally.");
             }
             else if (mPreviousSlots.Count > 1)
             {
                 int count = mPreviousSlots[mPreviousSlots.Count - 2].Count(SlotPredicate("Silly", "Steven"));
                 if (count == 0)
                 {
-                    Debug.Log("All 3 slots are the same color, unless any of them are Sally or there was a Silly Steven in the last stage.");
+                    Debug.Log("[Silly Slots] All 3 slots are the same color, unless any of them are Sally or there was a Silly Steven in the last stage.");
                     return true;
                 }
                 else
                 {
-                    Debug.Log("Fallthrough: All 3 slots are the same color, but there was a Silly Steven in the last stage.");
+                    Debug.Log("[Silly Slots] Fallthrough: All 3 slots are the same color, but there was a Silly Steven in the last stage.");
                 }
             }
             else
             {
-                Debug.Log("All 3 slots are the same color, unless any of them are Sally or there was a Silly Steven in the last stage.");
+                Debug.Log("[Silly Slots] All 3 slots are the same color, unless any of them are Sally or there was a Silly Steven in the last stage.");
                 return true;
             }
         }
         // There are any number of Silly Simons, unless there has been a Sassy Sausage in any stage.
         if (CountSlots("Silly", "Simon") > 0 && CountSlotsAllStages("Sassy", "Sausage") == 0)
         {
-            Debug.Log("There are any number of Silly Simons, unless there has been a Sassy Sausage in any stage.");
+            Debug.Log("[Silly Slots] There are any number of Silly Simons, unless there has been a Sassy Sausage in any stage.");
             return true;
         }
 
