@@ -166,8 +166,13 @@ public class SillySlots : MonoBehaviour
     static string[] Keywords = new string[] { "Sally", "Simon", "Steven", "Sausage", "Sassy", "Silly", "Soggy" };
     static int MaxStages = 4;
 
+    static int _moduleIdCounter = 1;
+    int _moduleId;
+
     void Awake()
     {
+        _moduleId = _moduleIdCounter++;
+
         Slots.PopulateSubstitionTable();
 
         mSlots = new Transform[] { Slot1, Slot2, Slot3 };
@@ -210,16 +215,16 @@ public class SillySlots : MonoBehaviour
         GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
         if (bActivated && !bAnimating && !solved)
         {
-            if (!CheckIllegalState())
+            if (!CheckIllegalState(false))
             {
-                Debug.Log("[Silly Slots] KEEP is correct.");
+                Debug.LogFormat("[Silly Slots #{0}] KEEP is correct.", _moduleId);
                 GetComponent<KMBombModule>().HandlePass();
                 GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.CorrectChime, transform);
                 solved = true;
             }
             else
             {
-                Debug.Log("[Silly Slots] Pressed KEEP, should have pulled the lever.");
+                Debug.LogFormat("[Silly Slots #{0}] Pressed KEEP, should have pulled the lever.", _moduleId);
                 GetComponent<KMBombModule>().HandleStrike();
             }
         }
@@ -235,9 +240,9 @@ public class SillySlots : MonoBehaviour
 
     void LeverPull()
     {
-        if (!CheckIllegalState())
+        if (!CheckIllegalState(false))
         {
-            Debug.Log("[Silly Slots] Pulled lever, should have pressed KEEP.");
+            Debug.LogFormat("[Silly Slots #{0}] Pulled lever, should have pressed KEEP.", _moduleId);
             GetComponent<KMBombModule>().HandleStrike();
         }
 
@@ -302,7 +307,12 @@ public class SillySlots : MonoBehaviour
 
     private void LogCurrentStage()
     {
-        Debug.LogFormat("[Silly Slots] Stage {0} is {2} / {1}.", mStage + 1, string.Join(", ", mCurrentSlots.Select(slot => string.Format("{0} {1}", slot.color, slot.shape)).ToArray()), Display.text);
+        Debug.LogFormat("[Silly Slots #{4}] Stage {0}: {1}\n{2}\n{3}", mStage + 1, Display.text,
+            string.Join(" │ ", mCurrentSlots.Select(slot => string.Format("{0} {1}", slot.color.ToString().PadRight(7, ' '), Slots.slotColors[Display.text].FirstOrDefault(kvp => kvp.Value == slot.color).Key.PadRight(8, ' '))).ToArray()),
+            string.Join(" │ ", mCurrentSlots.Select(slot => string.Format("{0} {1}", slot.shape.ToString().PadRight(7, ' '), Slots.slotShapes[Display.text].FirstOrDefault(kvp => kvp.Value == slot.shape).Key.PadRight(8, ' '))).ToArray()),
+            _moduleId);
+        var answer = CheckIllegalState(true);
+        Debug.LogFormat("[Silly Slots #{0}] Answer: {1}", _moduleId, answer ? "PULL" : "KEEP");
     }
 
     void Update()
@@ -420,7 +430,7 @@ public class SillySlots : MonoBehaviour
         return mCurrentSlots.Where(SlotColorPredicate(predicateColor)).ToArray();
     }
 
-    bool CheckIllegalState()
+    bool CheckIllegalState(bool doLogging)
     {
         string keyword = Display.text;
         var slotColors = Slots.slotColors[keyword];
@@ -429,7 +439,8 @@ public class SillySlots : MonoBehaviour
         // There is a single Silly Sasusage.
         if (CountSlots("Silly", "Sausage") == 1)
         {
-            Debug.Log("[Silly Slots] There is a single Silly Sasusage.");
+            if (doLogging)
+                Debug.LogFormat("[Silly Slots #{0}] There is a single Silly Sasusage.", _moduleId);
             return true;
         }
         // There is a single Sassy Sally, unless the slot in the same position 2 stages ago was soggy.
@@ -440,30 +451,35 @@ public class SillySlots : MonoBehaviour
                 int index = mCurrentSlots.ToList().FindIndex(s => { return s.color == slotColors["Sassy"] && s.shape == slotShapes["Sally"]; });
                 if (mPreviousSlots[mPreviousSlots.Count - 3][index].color == slotColors["Soggy"])
                 {
-                    Debug.Log("[Silly Slots] Fallthrough: There is a single Sassy Sally, but the slot in the same position 2 stages ago was soggy.");
+                    if (doLogging)
+                        Debug.LogFormat("[Silly Slots #{0}] Fallthrough: There is a single Sassy Sally, but the slot in the same position 2 stages ago was soggy.", _moduleId);
                 }
                 else
                 {
-                    Debug.Log("[Silly Slots] There is a single Sassy Sally, unless the slot in the same position 2 stages ago was soggy.");
+                    if (doLogging)
+                        Debug.LogFormat("[Silly Slots #{0}] There is a single Sassy Sally, unless the slot in the same position 2 stages ago was soggy.", _moduleId);
                     return true;
                 }
             }
             else
             {
-                Debug.Log("[Silly Slots] There is a single Sassy Sally, unless the slot in the same position 2 stages ago was soggy.");
+                if (doLogging)
+                    Debug.LogFormat("[Silly Slots #{0}] There is a single Sassy Sally, unless the slot in the same position 2 stages ago was soggy.", _moduleId);
                 return true;
             }
         }
         // There are 2 or more Soggy Stevens.
         if (CountSlots("Soggy", "Steven") >= 2)
         {
-            Debug.Log("[Silly Slots] There are 2 or more Soggy Stevens.");
+            if (doLogging)
+                Debug.LogFormat("[Silly Slots #{0}] There are 2 or more Soggy Stevens.", _moduleId);
             return true;
         }
         // There are 3 Simons, unless any of them are Sassy.
         if (CountSlotShapes("Simon") == 3 && CountSlotColors("Sassy") == 0)
         {
-            Debug.Log("[Silly Slots] There are 3 Simons, unless any of them are Sassy.");
+            if (doLogging)
+                Debug.LogFormat("[Silly Slots #{0}] There are 3 Simons, unless any of them are Sassy.", _moduleId);
             return true;
         }
         // There is a Sausage adjacent to a Sally, unless Sally is Soggy.
@@ -477,7 +493,8 @@ public class SillySlots : MonoBehaviour
                 (b.shape == slotShapes["Sausage"] && c.shape == slotShapes["Sally"] && c.color != slotColors["Soggy"]) ||
                 (c.shape == slotShapes["Sausage"] && b.shape == slotShapes["Sally"] && b.color != slotColors["Soggy"]))
             {
-                Debug.Log("[Silly Slots] There is a Sausage adjacent to a Sally, unless Sally is Soggy.");
+                if (doLogging)
+                    Debug.LogFormat("[Silly Slots #{0}] There is a Sausage adjacent to a Sally, unless Sally is Soggy.", _moduleId);
                 return true;
             }
         }
@@ -488,12 +505,14 @@ public class SillySlots : MonoBehaviour
             int count = sillySlots.Count(SlotShapePredicate("Steven"));
             if (count != sillySlots.Length)
             {
-                Debug.Log("[Silly Slots] There are exactly 2 Silly slots, unless they are both Steven.");
+                if (doLogging)
+                    Debug.LogFormat("[Silly Slots #{0}] There are exactly 2 Silly slots, unless they are both Steven.", _moduleId);
                 return true;
             }
             else
             {
-                Debug.Log("[Silly Slots] Fallthrough: There are exactly 2 Silly slots, but they were both Steven.");
+                if (doLogging)
+                    Debug.LogFormat("[Silly Slots #{0}] Fallthrough: There are exactly 2 Silly slots, but they were both Steven.", _moduleId);
             }
         }
         // There is a single Soggy slot, unless the previous stage had any number of Sausage slots.
@@ -504,17 +523,20 @@ public class SillySlots : MonoBehaviour
                 int count = mPreviousSlots[mPreviousSlots.Count - 2].Count(SlotShapePredicate("Sausage"));
                 if (count == 0)
                 {
-                    Debug.Log("[Silly Slots] There is a single Soggy slot, unless the previous stage had any number of Sausage slots.");
+                    if (doLogging)
+                        Debug.LogFormat("[Silly Slots #{0}] There is a single Soggy slot, unless the previous stage had any number of Sausage slots.", _moduleId);
                     return true;
                 }
                 else
                 {
-                    Debug.Log("[Silly Slots] Fallthrough: There is a single Soggy slot, but the previous stage had any number of Sausage slots.");
+                    if (doLogging)
+                        Debug.LogFormat("[Silly Slots #{0}] Fallthrough: There is a single Soggy slot, but the previous stage had any number of Sausage slots.", _moduleId);
                 }
             }
             else
             {
-                Debug.Log("[Silly Slots] There is a single Soggy slot, unless the previous stage had any number of Sausage slots.");
+                if (doLogging)
+                    Debug.LogFormat("[Silly Slots #{0}] There is a single Soggy slot, unless the previous stage had any number of Sausage slots.", _moduleId);
                 return true;
             }
         }
@@ -525,12 +547,14 @@ public class SillySlots : MonoBehaviour
             int count = CountSlotsAllStages("Soggy", "Sausage");
             if (count == 0)
             {
-                Debug.Log("[Silly Slots] All 3 slots are the same symbol and colour, unless there has been a Soggy Sausage at any stage.");
+                if (doLogging)
+                    Debug.LogFormat("[Silly Slots #{0}] All 3 slots are the same symbol and colour, unless there has been a Soggy Sausage at any stage.", _moduleId);
                 return true;
             }
             else
             {
-                Debug.Log("[Silly Slots] Fallthrough: All 3 slots are the same symbol and colour, but there has been a Soggy Sausage at any stage.");
+                if (doLogging)
+                    Debug.LogFormat("[Silly Slots #{0}] Fallthrough: All 3 slots are the same symbol and colour, but there has been a Soggy Sausage at any stage.", _moduleId);
             }
         }
         // All 3 slots are the same color, unless any of them are Sally or there was a Silly Steven in the last stage.
@@ -538,31 +562,36 @@ public class SillySlots : MonoBehaviour
         {
             if (CountSlotShapes("Sally") > 0)
             {
-                Debug.Log("[Silly Slots] Fallthrough: All 3 slots are the same color, but any of them are Sally.");
+                if (doLogging)
+                    Debug.LogFormat("[Silly Slots #{0}] Fallthrough: All 3 slots are the same color, but there was a Sally.", _moduleId);
             }
             else if (mPreviousSlots.Count > 1)
             {
                 int count = mPreviousSlots[mPreviousSlots.Count - 2].Count(SlotPredicate("Silly", "Steven"));
                 if (count == 0)
                 {
-                    Debug.Log("[Silly Slots] All 3 slots are the same color, unless any of them are Sally or there was a Silly Steven in the last stage.");
+                    if (doLogging)
+                        Debug.LogFormat("[Silly Slots #{0}] All 3 slots are the same color, unless any of them are Sally or there was a Silly Steven in the last stage.", _moduleId);
                     return true;
                 }
                 else
                 {
-                    Debug.Log("[Silly Slots] Fallthrough: All 3 slots are the same color, but there was a Silly Steven in the last stage.");
+                    if (doLogging)
+                        Debug.LogFormat("[Silly Slots #{0}] Fallthrough: All 3 slots are the same color, but there was a Silly Steven in the last stage.", _moduleId);
                 }
             }
             else
             {
-                Debug.Log("[Silly Slots] All 3 slots are the same color, unless any of them are Sally or there was a Silly Steven in the last stage.");
+                if (doLogging)
+                    Debug.LogFormat("[Silly Slots #{0}] All 3 slots are the same color, unless any of them are Sally or there was a Silly Steven in the last stage.", _moduleId);
                 return true;
             }
         }
         // There are any number of Silly Simons, unless there has been a Sassy Sausage in any stage.
         if (CountSlots("Silly", "Simon") > 0 && CountSlotsAllStages("Sassy", "Sausage") == 0)
         {
-            Debug.Log("[Silly Slots] There are any number of Silly Simons, unless there has been a Sassy Sausage in any stage.");
+            if (doLogging)
+                Debug.LogFormat("[Silly Slots #{0}] There are any number of Silly Simons, unless there has been a Sassy Sausage in any stage.", _moduleId);
             return true;
         }
 
