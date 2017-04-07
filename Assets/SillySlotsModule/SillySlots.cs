@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
+using Random = UnityEngine.Random;
 
 public class SillySlots : MonoBehaviour
 {
@@ -206,6 +209,28 @@ public class SillySlots : MonoBehaviour
         Lever.OnInteract += LeverInteract;
         Keep.OnInteract += KeepInteract;
         GetComponent<KMBombModule>().OnActivate += OnActivate;
+    }
+
+    public IEnumerator ProcessTwitchCommand(string command)
+    {
+        Match modulesMatch = Regex.Match(command, "^(keep|pull)$", RegexOptions.IgnoreCase);
+        if (!modulesMatch.Success || mStage == MaxStages)
+        {
+            yield break;
+        }
+
+        yield return command;
+        KMSelectable buttonSelectable = command.Equals("keep", StringComparison.InvariantCultureIgnoreCase) 
+            ? Keep 
+            : Lever;
+        yield return buttonSelectable;
+        yield return new WaitForSeconds(0.1f);
+        yield return buttonSelectable;
+        if (mStage == MaxStages)
+        {
+            yield return "solve";  //Solve for the 4th pull is delayed.
+        }
+
     }
 
     void SetLED(int index, bool isOn)
