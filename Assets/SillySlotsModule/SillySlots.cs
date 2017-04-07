@@ -214,7 +214,7 @@ public class SillySlots : MonoBehaviour
     public IEnumerator ProcessTwitchCommand(string command)
     {
         Match modulesMatch = Regex.Match(command, "^(keep|pull)$", RegexOptions.IgnoreCase);
-        if (!modulesMatch.Success)
+        if (!modulesMatch.Success || mStage == MaxStages)
         {
             yield break;
         }
