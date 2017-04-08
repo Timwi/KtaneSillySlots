@@ -211,28 +211,6 @@ public class SillySlots : MonoBehaviour
         GetComponent<KMBombModule>().OnActivate += OnActivate;
     }
 
-    public IEnumerator ProcessTwitchCommand(string command)
-    {
-        Match modulesMatch = Regex.Match(command, "^(keep|pull)$", RegexOptions.IgnoreCase);
-        if (!modulesMatch.Success || mStage == MaxStages)
-        {
-            yield break;
-        }
-
-        yield return command;
-        KMSelectable buttonSelectable = command.Equals("keep", StringComparison.InvariantCultureIgnoreCase) 
-            ? Keep 
-            : Lever;
-        yield return buttonSelectable;
-        yield return new WaitForSeconds(0.1f);
-        yield return buttonSelectable;
-        if (mStage == MaxStages)
-        {
-            yield return "solve";  //Solve for the 4th pull is delayed.
-        }
-
-    }
-
     void SetLED(int index, bool isOn)
     {
         LEDs[index].material.SetFloat("_Blend", isOn ? 1f : 0f);
@@ -567,5 +545,20 @@ public class SillySlots : MonoBehaviour
         }
 
         return false;
+    }
+
+    public IEnumerator ProcessTwitchCommand(string command)
+    {
+        var match = Regex.Match(command.Trim(), "^(keep|pull)$", RegexOptions.IgnoreCase);
+        if (!match.Success || mStage == MaxStages)
+            yield break;
+
+        var btn = command.Trim().Equals("keep", StringComparison.InvariantCultureIgnoreCase) ? Keep : Lever;
+        yield return btn;
+        yield return new WaitForSeconds(0.1f);
+        yield return btn;
+
+        if (mStage == MaxStages)
+            yield return "solve";  //Solve for the 4th pull is delayed.
     }
 }
