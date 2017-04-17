@@ -10,10 +10,15 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5cf2299c8864afe4ab42466f546ae20d, type: 3}
   m_Name: WorkshopItem
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   WorkshopPublishedFileID: 814822565
   Title: Silly Slots
-  Description: "Cha-Ching.\r\n\r\nModule created by Perky, maintained by Timwi.\r\n\r\n[h1][b]IMPORTANT:[/b] This is a reupload because the module’s maintainer has changed. Players who were subscribed to the old (buggy) version will still have that version on their system. To delete it, search your Steam folder for “753762370” and delete the folder with that name.[/h1]\r\n\r\n[url=http://ktane.timwi.de/PDF/Silly%20Slots.pdf]Manual
-    PDF[/url]\r\n[url=http://ktane.timwi.de/HTML/Silly%20Slots.html]Manual HTML[/url]"
+  Description: "Cha-Ching.\r\n\r\nModule created by Perky, maintained by Timwi.\r\n\r\n[h1][b]IMPORTANT:[/b]
+    This is a reupload because the module\u2019s maintainer has changed. Players who
+    were subscribed to the old (buggy) version will still have that version on their
+    system. To delete it, search your Steam folder for \u201C753762370\u201D and delete
+    the folder with that name.[/h1]\r\n\r\n[url=http://ktane.timwi.de/PDF/Silly%20Slots.pdf]Manual
+    PDF[/url]\r\n[url=http://ktane.timwi.de/HTML/Silly%20Slots.html]Manual HTML[/url]\n[b][url=https://www.youtube.com/watch?v=gZjyssG8ZgY]Tutorial
+    video[/url] (thanks Elias!)[/b]"
   PreviewImage: {fileID: 2800000, guid: d17da6eb2725a9043a431f21bf0d11fd, type: 3}
   Tags: []
