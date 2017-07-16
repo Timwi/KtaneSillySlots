@@ -406,7 +406,7 @@ public class SillySlots : MonoBehaviour
             else
             {
                 if (doLogging)
-                    Debug.LogFormat("[Silly Slots #{0}] There is a single Sassy Sally ({1} {2}), and there were no 2 previous stages.", _moduleId, sassy, sally, soggy);
+                    Debug.LogFormat("[Silly Slots #{0}] There is a single Sassy Sally ({1} {2}), and there were no 2 previous stages.", _moduleId, sassy, sally);
                 return true;
             }
         }
@@ -517,7 +517,7 @@ public class SillySlots : MonoBehaviour
                 else
                 {
                     if (doLogging)
-                        Debug.LogFormat("[Silly Slots #{0}] Fallthrough: All 3 slots are the same color, but there was a Silly Steven ({2} {3}) in the last stage.", _moduleId, silly, steven);
+                        Debug.LogFormat("[Silly Slots #{0}] Fallthrough: All 3 slots are the same color, but there was a Silly Steven ({1} {2}) in the last stage.", _moduleId, silly, steven);
                 }
             }
             else
