@@ -567,12 +567,12 @@ public class SillySlots : MonoBehaviour
         if (!match.Success || mStage == MaxStages)
             yield break;
 
-        var btn = command.Trim().Equals("keep", StringComparison.InvariantCultureIgnoreCase) ? Keep : Lever;
-        yield return btn;
-        yield return new WaitForSeconds(0.1f);
-        yield return btn;
+        yield return null;
 
-        if (mStage == MaxStages)
+        if ((mStage+1) == MaxStages) //Bugfix for solve not credited if the 4th pull caused a strike.
             yield return "solve";  //Solve for the 4th pull is delayed.
+
+        var btn = command.Trim().Equals("keep", StringComparison.InvariantCultureIgnoreCase) ? Keep : Lever;
+        btn.OnInteract();
     }
 }
