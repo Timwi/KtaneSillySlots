@@ -391,11 +391,11 @@ public class SillySlots : MonoBehaviour
         var simon = slotShapes[ShapeWord.Simon];
         var steven = slotShapes[ShapeWord.Steven];
 
-        // There is a single Silly Sasusage.
+        // There is a single Silly Sausage.
         if (mCurrentSlots.Count(s => s.color == silly && s.shape == sausage) == 1)
         {
             if (doLogging)
-                Debug.LogFormat("[Silly Slots #{0}] There is a single Silly Sasusage ({1} {2}).", _moduleId, silly, sausage);
+                Debug.LogFormat("[Silly Slots #{0}] There is a single Silly Sausage ({1} {2}).", _moduleId, silly, sausage);
             return true;
         }
 
