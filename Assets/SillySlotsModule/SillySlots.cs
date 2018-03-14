@@ -561,6 +561,10 @@ public class SillySlots : MonoBehaviour
         return false;
     }
 
+#pragma warning disable 414
+    private string TwitchHelpMessage = @"Press the Keep button with “!{0} keep”. Pull the lever with “!{0} pull”.";
+#pragma warning restore 414
+
     public IEnumerator ProcessTwitchCommand(string command)
     {
         var match = Regex.Match(command.Trim(), "^(keep|pull)$", RegexOptions.IgnoreCase);
@@ -569,8 +573,8 @@ public class SillySlots : MonoBehaviour
 
         yield return null;
 
-        if ((mStage+1) == MaxStages) //Bugfix for solve not credited if the 4th pull caused a strike.
-            yield return "solve";  //Solve for the 4th pull is delayed.
+        if ((mStage + 1) == MaxStages) // If the 4th pull causes a strike...
+            yield return "solve";  // ... still need to award the (delayed) solve.
 
         var btn = command.Trim().Equals("keep", StringComparison.InvariantCultureIgnoreCase) ? Keep : Lever;
         btn.OnInteract();
