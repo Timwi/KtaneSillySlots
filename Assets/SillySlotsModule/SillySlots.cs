@@ -579,4 +579,18 @@ public class SillySlots : MonoBehaviour
         var btn = command.Trim().Equals("keep", StringComparison.InvariantCultureIgnoreCase) ? Keep : Lever;
         btn.OnInteract();
     }
+
+    IEnumerator TwitchHandleForcedSolve()
+    {
+        while (!solved)
+        {
+            // false = keep, true = pull
+            var state = CheckIllegalState(false);
+            (state ? Lever : Keep).OnInteract();
+            yield return new WaitForSeconds(.1f);
+
+            while (bAnimating)
+                yield return true;
+        }
+    }
 }

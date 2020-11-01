@@ -14,8 +14,7 @@ MonoBehaviour:
   id: SillySlots
   title: Silly Slots
   description: "Cha-Ching.\r\n\r\nModule created by Perky, maintained by Timwi.\r\n\r\r\n[url=http://ktane.timwi.de/PDF/Silly%20Slots.pdf]Manual
-    PDF[/url]\r\n[url=http://ktane.timwi.de/HTML/Silly%20Slots.html]Manual HTML[/url]\n[b][url=https://www.youtube.com/watch?v=gZjyssG8ZgY]Tutorial
-    video[/url] (thanks Elias!)[/b]"
+    PDF[/url]\r\n[url=http://ktane.timwi.de/HTML/Silly%20Slots.html]Manual HTML[/url]"
   version: 2.0
   outputFolder: build
   previewImage: {fileID: 2800000, guid: d17da6eb2725a9043a431f21bf0d11fd, type: 3}
