@@ -99,7 +99,7 @@ public class SillySlots : MonoBehaviour
             stevenColors.Add(ColorWord.Sassy, SlotColor.GREEN);
             stevenColors.Add(ColorWord.Silly, SlotColor.RED);
             stevenColors.Add(ColorWord.Soggy, SlotColor.BLUE);
-            slotColors.Add("Sassy", sassyColors);
+            slotColors.Add("Sussy", sassyColors);
             slotColors.Add("Silly", sillyColors);
             slotColors.Add("Soggy", soggyColors);
             slotColors.Add("Sally", sallyColors);
